@@ -17,7 +17,7 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     try {
       await googleLogin();
-      if (user != null) navigate("/personas");
+      navigate("/personas");
     } catch (error) {
       console.error(error.message);
     }
@@ -27,7 +27,6 @@ const Login = () => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then((UserCredential) => {
-        console.log(UserCredential);
         navigate("/personas");
       })
       .catch((error) => {

@@ -36,6 +36,12 @@ const CrudProvider = ({ children }) => {
     );
     setPersonas(newData);
     setShow(false);
+    Swal.fire({
+      icon: "success",
+      title: "Registro editado con éxito",
+      showConfirmButton: false,
+      timer: 2000,
+    });
   };
 
   const deleteData = (id) => {

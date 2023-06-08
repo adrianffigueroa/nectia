@@ -23,7 +23,6 @@ const Register = () => {
     } else {
       createUserWithEmailAndPassword(auth, email, password)
         .then((UserCredential) => {
-          console.log(UserCredential);
           Swal.fire({
             icon: "success",
             title: "Usuario creado con éxito. Inicie seción para continuar",

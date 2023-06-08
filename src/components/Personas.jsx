@@ -35,7 +35,6 @@ const Personas = () => {
         return persona;
     });
     setPersonas(resultadosBusqueda);
-    console.log(personas);
   };
   return (
     <div className="container mt-4 ">
