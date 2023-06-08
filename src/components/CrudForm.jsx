@@ -1,6 +1,7 @@
 import React from "react";
 import { useContext, useState, useEffect } from "react";
 import { CrudContext } from "../context/CrudContext";
+import Swal from "sweetalert2";
 
 const initailForm = {
   id: null,
@@ -33,7 +34,11 @@ const CrudForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.nombre || !form.apellido || !form.email || !form.genero) {
-      alert("Datos incompletos");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Datos incompletos",
+      });
       return;
     }
     if (form.id === null) {
@@ -45,7 +50,7 @@ const CrudForm = () => {
     handleReset();
   };
 
-  const handleReset = (e) => {
+  const handleReset = () => {
     setForm(initailForm);
     setDataToEdit(null);
   };

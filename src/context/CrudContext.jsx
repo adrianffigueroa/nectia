@@ -1,10 +1,13 @@
 import { createContext, useEffect, useState } from "react";
 import * as PersonaService from "../services/PersonaService";
+import Swal from "sweetalert2";
 export const CrudContext = createContext();
 const CrudProvider = ({ children }) => {
   const [personas, setPersonas] = useState([]);
   const [dataToEdit, setDataToEdit] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [busqueda, setBusqueda] = useState("");
+  const [tablaPersonas, setTablaPersonas] = useState([]);
   const [show, setShow] = useState(false);
   const handleClose = () => {
     setDataToEdit(null);
@@ -15,6 +18,7 @@ const CrudProvider = ({ children }) => {
   useEffect(() => {
     PersonaService.getAll().then((response) => {
       setPersonas(response);
+      setTablaPersonas(response);
       setLoading(false);
     });
   }, []);
@@ -22,6 +26,7 @@ const CrudProvider = ({ children }) => {
   const createData = (data) => {
     data.id = Math.floor(Math.random() * 10000);
     setPersonas([...personas, data]);
+    setTablaPersonas([...personas, data]);
     setShow(false);
   };
 
@@ -34,11 +39,22 @@ const CrudProvider = ({ children }) => {
   };
 
   const deleteData = (id) => {
-    let isDelete = confirm("¿Estas seguro que deseas eliminar el registro?");
-    if (isDelete) {
-      let newData = personas.filter((persona) => persona.id !== id);
-      setPersonas(newData);
-    } else return;
+    Swal.fire({
+      title: "¿Está seguro que desea elimiar el registro?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let newData = personas.filter((persona) => persona.id !== id);
+        setPersonas(newData);
+        setTablaPersonas(newData);
+        Swal.fire("¡Eliminado!", "El registro ha sido eliminado", "success");
+      }
+    });
   };
   const data = {
     personas,
@@ -53,6 +69,10 @@ const CrudProvider = ({ children }) => {
     dataToEdit,
     deleteData,
     loading,
+    setBusqueda,
+    busqueda,
+    setTablaPersonas,
+    tablaPersonas,
   };
 
   return <CrudContext.Provider value={data}>{children}</CrudContext.Provider>;
